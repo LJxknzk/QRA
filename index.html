@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LYFJSHS QR HOME</title>
+  <link rel="stylesheet" href="CSS/stuff.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<script>
+    document.querySelectorAll('.dropbtn').forEach(button => {
+  button.addEventListener('click', e => {
+    e.stopPropagation();
+
+    const dropdown = button.nextElementSibling;
+    const isShown = dropdown.classList.contains('show');
+
+    // Close all dropdowns first
+    document.querySelectorAll('.dropdown-content.show').forEach(dc => {
+      dc.classList.remove('show');
+      dc.style.left = '';
+      dc.style.right = '';
+    });
+
+    if (!isShown) { 
+      dropdown.classList.add('show');
+
+      // Check overflow and adjust alignment if needed
+      const rect = dropdown.getBoundingClientRect();
+      const overflowRight = rect.right - window.innerWidth;
+
+      if (overflowRight > 0) {
+        dropdown.style.left = 'auto';
+        dropdown.style.right = '0';
+      } else {
+        dropdown.style.left = '0';
+        dropdown.style.right = 'auto';
+      }
+    }
+  });
+});
+
+// Close dropdowns if clicking outside
+document.addEventListener('click', () => {
+  document.querySelectorAll('.dropdown-content.show').forEach(dc => {
+    dc.classList.remove('show');
+    dc.style.left = '';
+    dc.style.right = '';
+  });
+});
+
+// Optional: close on window resize to avoid stuck dropdowns
+window.addEventListener('resize', () => {
+  document.querySelectorAll('.dropdown-content.show').forEach(dc => {
+    dc.classList.remove('show');
+    dc.style.left = '';
+    dc.style.right = '';
+  });
+});
+</script>
+<body>
+  <nav class="navbar">
+    <div class="nav-header">
+      <p class="luis">Luis Y. Ferrer Jr. Senior High School</p>
+      <p class="qr">QR Attendance</p>
+    </div>
+    <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    <div class="create-container">
+      <button class="create-button" onclick="window.location.href='accountcreate.html'">
+        Create Account
+      </button>
+    </div>
+    </div>
+  </nav>
+  <div class="text-container">
+      <p class="attend">ATTENDANCE WITH ONE SCAN.</p>
+      <p class="this">This website is purely made for Luis Y. Ferrer Jr. Senior High School, and will not be used in any other schools.</p>
+  </div>
+  <div class="login-container">
+    <div class="button-container" style="display: flex; flex-direction: row; width: 40.078vh; height: 7.786vh;">
+    <button class="tc" id="teacher-btn" type="button">Teacher</button>
+    <button class="st" id="student-btn" type="button">Student</button>
+    </div>
+    <div class="login-cell">
+      <div>
+      <p class="login">Login</p>
+    </div>
+    <form id="login-form">
+      <input type="hidden" id="user-type" name="user_type" value="student">
+      <label for="email">Email:</label><br>
+      <input type="text" placeholder="email@example.com" id="email" name="email" required><br>
+      <label for="pwd">Password:</label><br>
+      <input type="password" placeholder="******" id="pwd" name="pwd" required><br>
+      <div class="submit-btn">
+        <input type="submit" value="Login">
+      </div>
+    </form>
+    <div style="display: flex; text-align: center; width: 47.786vh; height: 4.622vh;">
+      <p style="font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-style: italic; color: rgba(12, 24, 33, 50%);">Are you a new student? Just click the “Create Account” to create your own QR code!</p>
+    </div>
+    </div>
+  </div>
+  <!-- Signup Success Message -->
+<div id="signup-message" style="
+  display: none;
+  padding: 10px;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  border-radius: 5px;
+  margin: 20px;
+  text-align: center;
+  font-weight: bold;
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+">
+  Signup successful!
+</div>
+
+<script>
+  // Function to read query parameters
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  // Show signup success message if "signup=success" is in URL
+  if (getQueryParam("signup") === "success") {
+    const msgBox = document.getElementById("signup-message");
+    msgBox.style.display = "block";
+
+    // Optional: Hide after 3 seconds
+    setTimeout(() => {
+      msgBox.style.display = "none";
+    }, 3000);
+  }
+
+  // User type toggle
+  let currentUserType = 'student';
+  const teacherBtn = document.getElementById('teacher-btn');
+  const studentBtn = document.getElementById('student-btn');
+  const userTypeInput = document.getElementById('user-type');
+  const loginForm = document.getElementById('login-form');
+
+  // Initialize student button as active
+  studentBtn.style.backgroundColor = '#7badd8';
+  studentBtn.style.color = '#0c1821';
+  teacherBtn.style.backgroundColor = '#0c1821';
+  teacherBtn.style.color = '#7badd8';
+
+  teacherBtn.addEventListener('click', () => {
+    currentUserType = 'teacher';
+    userTypeInput.value = 'teacher';
+    teacherBtn.style.backgroundColor = '#7badd8';
+    teacherBtn.style.color = '#0c1821';
+    studentBtn.style.backgroundColor = '#0c1821';
+    studentBtn.style.color = '#7badd8';
+    // Clear form when switching
+    loginForm.reset();
+    userTypeInput.value = 'teacher';
+  });
+
+  studentBtn.addEventListener('click', () => {
+    currentUserType = 'student';
+    userTypeInput.value = 'student';
+    studentBtn.style.backgroundColor = '#7badd8';
+    studentBtn.style.color = '#0c1821';
+    teacherBtn.style.backgroundColor = '#0c1821';
+    teacherBtn.style.color = '#7badd8';
+    // Clear form when switching
+    loginForm.reset();
+    userTypeInput.value = 'student';
+  });
+
+  // Login form submission
+  loginForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Ensure user_type matches the selected button
+    const selectedUserType = currentUserType;
+    
+    const formData = new FormData(this);
+    const data = {
+      email: formData.get('email'),
+      pwd: formData.get('pwd'),
+      user_type: selectedUserType  // Force use the selected user type
+    };
+
+    // Validate that user_type is set correctly
+    if (!data.user_type || (data.user_type !== 'student' && data.user_type !== 'teacher')) {
+      alert('Please select Student or Teacher login type');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert('Login successful! Redirecting...');
+        window.location.href = result.redirect;
+      } else {
+        alert(result.error || 'Login failed');
+      }
+    } catch (error) {
+      alert('Network error. Please try again.');
+      console.error('Login error:', error);
+    }
+  });
+</script>
+</body>
+</html>
